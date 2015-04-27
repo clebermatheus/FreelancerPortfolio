@@ -3,8 +3,6 @@
 #include "conjunto.h"
 
 void alocaConjunto(CONJUNTO *conj){
-    conj = malloc(sizeof(CONJUNTO));
-
     conj->tam = 100;
     conj->inicio = NULL;
     conj->fim = NULL;
@@ -14,11 +12,14 @@ void imprimeConjunto(CONJUNTO *conj, int i){
     ELEMENTO *temp = conj->inicio;
 
     printf("Conjunto %d: {", i);
-    while(temp->prox!=conj->fim){
-        printf("%d, ", temp->valor);
+    while(temp->prox!=NULL){
+        printf("%d", temp->valor);
+        if(temp!=conj->fim){
+            printf(", ");
+        }
         temp = temp->prox;
     }
-    printf("%d}\r\n", conj->fim->valor);
+    printf("%d}\r\n\r\n", conj->fim->valor);
 }
 
 void insereElemConjunto(CONJUNTO *conj, int valor){
@@ -71,38 +72,46 @@ void removeElemConjunto(CONJUNTO *conj, int valor){
         temp = temp->prox;
     }
     if(temp->valor==valor){
+        if(temp->ant!=NULL){
+            temp->ant->prox = temp->prox;
+        }
         temp->prox->ant = temp->ant;
-        temp->ant->prox = temp->prox;
+        if(temp==conj->inicio){
+            conj->inicio = conj->inicio->prox;
+        }
+        if(temp==conj->fim){
+            conj->fim = conj->fim->ant;
+        }
         free(temp);
         temp = NULL;
     }
 }
 
-CONJUNTO uneConjuntos(CONJUNTO conj1, CONJUNTO conj2){
+CONJUNTO *uneConjuntos(CONJUNTO conj1, CONJUNTO conj2){
     CONJUNTO uniao;
     ELEMENTO *temp = conj1.inicio;
 
     alocaConjunto(&uniao);
-    while(temp->prox!=NULL){
+    while(temp!=NULL){
         insereElemConjunto(&uniao, temp->valor);
         temp = temp->prox;
     }
     temp = conj2.inicio;
-    while(temp->prox!=NULL){
+    while(temp!=NULL){
         insereElemConjunto(&uniao, temp->valor);
         temp = temp->prox;
     }
 
-    return uniao;
+    return &uniao;
 }
 
-CONJUNTO interseccaoConjuntos(CONJUNTO conj1, CONJUNTO conj2){
+CONJUNTO *interseccaoConjuntos(CONJUNTO conj1, CONJUNTO conj2){
     CONJUNTO interseccao;
     ELEMENTO *temp1 = conj1.inicio, *temp2 = conj2.inicio;
 
     alocaConjunto(&interseccao);
-    while(temp1->prox!=NULL){
-        while(temp2->prox!=NULL){
+    while(temp1!=NULL){
+        while(temp2!=NULL){
             if(temp1->valor==temp2->valor){
                 insereElemConjunto(&interseccao, temp1->valor);
                 break;
@@ -112,20 +121,22 @@ CONJUNTO interseccaoConjuntos(CONJUNTO conj1, CONJUNTO conj2){
         temp1 = temp1->prox;
     }
 
-    return interseccao;
+    return &interseccao;
 }
 
-CONJUNTO diferencaConjuntos(CONJUNTO conj1, CONJUNTO conj2){
+CONJUNTO *diferencaConjuntos(CONJUNTO conj1, CONJUNTO conj2){
     CONJUNTO diferenca;
-    ELEMENTO *temp1 = conj1.inicio, *temp2 = conj2.inicio;
+    ELEMENTO *temp1 = conj1.inicio, *temp2;
 
     alocaConjunto(&diferenca);
-    while(temp1->prox!=NULL){
+    while(temp1!=NULL){
         insereElemConjunto(&diferenca, temp1->valor);
         temp1 = temp1->prox;
     }
-    while(temp1->prox!=NULL){
-        while(temp2->prox!=NULL){
+    temp1 = conj1.inicio;
+    while(temp1!=NULL){
+        temp2 = conj2.inicio;
+        while(temp2!=NULL){
             if(temp1->valor==temp2->valor){
                 removeElemConjunto(&diferenca, temp1->valor);
                 break;
@@ -135,7 +146,7 @@ CONJUNTO diferencaConjuntos(CONJUNTO conj1, CONJUNTO conj2){
         temp1 = temp1->prox;
     }
 
-    return diferenca;
+    return &diferenca;
 }
 
 BOOL contidoNoConjunto(CONJUNTO conj1, CONJUNTO conj2){
@@ -188,7 +199,7 @@ BOOL elemPertenceConjunto(CONJUNTO conj1, ELEMENTO elem){
 
     while(temp->prox!=NULL){
         if(temp->valor==elem.valor){
-            isPertence == TRUE;
+            isPertence = TRUE;
             break;
         }
         temp = temp->prox;

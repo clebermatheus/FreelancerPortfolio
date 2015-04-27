@@ -25,9 +25,9 @@ void removeElemConjunto(CONJUNTO *conj, int valor);
 
 /*  Conj1 = Conjunto Principal
 *   Conj2 = Conjunto Secundário */
-CONJUNTO uneConjuntos(CONJUNTO conj1, CONJUNTO conj2);
-CONJUNTO interseccaoConjuntos(CONJUNTO conj1, CONJUNTO conj2);
-CONJUNTO diferencaConjuntos(CONJUNTO conj1, CONJUNTO conj2);
+CONJUNTO *uneConjuntos(CONJUNTO conj1, CONJUNTO conj2);
+CONJUNTO *interseccaoConjuntos(CONJUNTO conj1, CONJUNTO conj2);
+CONJUNTO *diferencaConjuntos(CONJUNTO conj1, CONJUNTO conj2);
 BOOL contidoNoConjunto(CONJUNTO conj1, CONJUNTO conj2);
 BOOL igualConjunto(CONJUNTO conj1, CONJUNTO conj2);
 BOOL elemPertenceConjunto(CONJUNTO conj1, ELEMENTO elem);
