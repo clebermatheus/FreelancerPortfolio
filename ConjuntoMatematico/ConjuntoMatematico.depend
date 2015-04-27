@@ -1,0 +1,12 @@
+# depslib dependency file v1.0
+1385316878 source:e:\freelancer\freelancerportfolio\conjuntomatematico\main.c
+	<stdio.h>
+	<stdlib.h>
+
+1430102896 source:e:\freelancer\freelancerportfolio\conjuntomatematico\conjunto.c
+	<stdio.h>
+	<stdlib.h>
+	"conjunto.h"
+
+1430102109 e:\freelancer\freelancerportfolio\conjuntomatematico\conjunto.h
+
